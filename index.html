@@ -14,8 +14,8 @@
     <!-- Header -->
     <nav class="wow fadeInDown">
         <div class="nav-center">
-            <a href="#" class="active">PAIRS</a>
-            <a href="#" onclick="ShowStats()">STATS</a>
+            <a href="#" class="active"><h3><b>HXY.FINANCE</b></h3></a>
+            <!--<a href="#" onclick="ShowStats()">STATS</a>-->
         </div>
         <div class="nav-right">
              <a onclick="Approve()">Approve <img src="images/fox.png"></a>
@@ -24,14 +24,17 @@
     </nav>
    
     <!-- Header -->
+    <div id="successMsg"></div>
+    <div id="errorMsg"></div>
     <div id="centerdiv">
         <section class="sec1">
-            <div class="info wow fadeInDown">
-                <img src="images/info.png">
-                Deposit UNI-V2-LP token, receive HXYF
+            <div class="info row wow fadeInDown">
+                Welcome&nbsp;<b id="userAddress" class="addressBreak"></b><br/>
             </div>
 
             <div class="table-outer">
+                <div class="row info">Balance:&nbsp;<b id="walletBalance"></b> </div>
+                <div class="row info"><img src="images/info.png">&nbsp;Deposit UNI-V2-LP token, receive HXYF </div>
                 <div class="accord-row  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.20s">
                     <div class="accord-row-head" data-toggle="collapse" data-target="#collapseExampleArea" href="#collapseExampleArea" aria-expanded="false">
                         <div class="accord-row1">
@@ -59,45 +62,40 @@
                     <div id="collapseExampleArea" class="collapserow collapse">
                         <div class="collapserow1">
                             <div class="collapserowHeading">
-                                Your Wallet
+                                Active Deposit<br/>
+                                <div id="activeDepositHxyf">0 ETH/HXYF-LP</div>
                             </div>
-                            <input type="" name="" class="form-control" placeholder="0.015">
-                            <div class="coll-row-opt-outer">
-                                <div class="coll-row-opt-inner">0%</div>
-                                <div class="coll-row-opt-inner">25%</div>
-                                <div class="coll-row-opt-inner">75%</div>
-                                <div class="coll-row-opt-inner">100%</div>
+                            <input id="lockAmountHxyf" type="number" class="form-control" step="any" placeholder="0" value="0"> UNI-V2-ETH/HXYF-LP
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                     <a onclick="LockLp('hxyf')" class="btn-main">DEPOSIT</a>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <a onclick="UnlockLp('hxyf')" class="btn-main">WITHDRAW</a>
+                                </div>
                             </div>
-                            <a href="" class="btn-main">DEPOSIT</a>
                         </div>
                         <div class="collapserow2">
-                            <div class="collapserowHeading">
-                                Your Dividends
+                            <div class="collapserowHeading">Claimable Rewards<br/>
+                            <div style="margin:0" id="claimableHxyfHxyf">0 HXYF</div>
                             </div>
-                            <input type="" name="" class="form-control" placeholder="0.015">
-                            <div class="coll-row-opt-outer">
-                                <div class="coll-row-opt-inner">0%</div>
-                                <div class="coll-row-opt-inner">25%</div>
-                                <div class="coll-row-opt-inner">75%</div>
-                                <div class="coll-row-opt-inner">100%</div>
-                            </div>
-                            <a href="" class="btn-main">DEPOSIT</a>
+                            <a onclick="Harvest('hxyf')" class="btn-main">HARVEST</a>
                         </div>
                     </div>
                 </div>
 
-                <div class="accord-row  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.50s">
-                    <div class="accord-row-head" data-toggle="collapse" data-target="#collapseExampleArea2" href="#collapseExampleArea2" aria-expanded="false">
+                <div class="accord-row  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.20s">
+                    <div class="accord-row-head" data-toggle="collapse" data-target="#collapseExampleArea" href="#collapseExampleArea" aria-expanded="false">
                         <div class="accord-row1">
                             <div>
                                 <img src="images/conv.png" alt="icon">
-                                <span>HXYF</span>
+                                <span>ETH/HXY LP</span>
                             </div>
                             <div>
                                <div class="accord-subhead">
                                    APY
                                </div>
-                               106%
+                               1500%
                            </div>
                         </div>
                         <div class="accord-row2">
@@ -105,53 +103,49 @@
                                <div class="accord-subhead">
                                    AVAILABLE TO DEPOSIT
                                </div>
-                               15.546 UNI
+                               <span id="hxyfEthLpBalance">0</span><br/>UNI-V2-ETH/HXY-LP
                            </div>
                             <i class="fa fa-caret-down" aria-hidden="true"></i>
                         </div>
                     </div>
-                    <div id="collapseExampleArea2" class="collapserow collapse">
+                    <div id="collapseExampleArea" class="collapserow collapse">
                         <div class="collapserow1">
                             <div class="collapserowHeading">
-                                Your Wallet
+                                Active Deposit<br/>
+                                <div id="activeDepositHxy">0 ETH/HXY-LP</div>
                             </div>
-                            <input type="" name="" class="form-control" placeholder="0.015">
-                            <div class="coll-row-opt-outer">
-                                <div class="coll-row-opt-inner">0%</div>
-                                <div class="coll-row-opt-inner">25%</div>
-                                <div class="coll-row-opt-inner">75%</div>
-                                <div class="coll-row-opt-inner">100%</div>
+                            <input id="lockAmountHxy" type="number" class="form-control" step="any" placeholder="0" value="0"> UNI-V2-ETH/HXY-LP
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                     <a onclick="LockLp('hxy')" class="btn-main">DEPOSIT</a>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <a onclick="UnlockLp('hxy')" class="btn-main">WITHDRAW</a>
+                                </div>
                             </div>
-                            <a href="" class="btn-main">DEPOSIT</a>
                         </div>
                         <div class="collapserow2">
                             <div class="collapserowHeading">
-                                Your Dividends
+                                Claimable Rewards<br/>
+                                <div style="margin:0" id="claimableHxyfHxy">0 HXYF</div>
                             </div>
-                            <input type="" name="" class="form-control" placeholder="0.015">
-                            <div class="coll-row-opt-outer">
-                                <div class="coll-row-opt-inner">0%</div>
-                                <div class="coll-row-opt-inner">25%</div>
-                                <div class="coll-row-opt-inner">75%</div>
-                                <div class="coll-row-opt-inner">100%</div>
-                            </div>
-                            <a href="" class="btn-main">DEPOSIT</a>
+                            <a onclick="Harvest('hxy')" class="btn-main">HARVEST</a>
                         </div>
                     </div>
                 </div>
 
-                <div class="accord-row  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.80s">
-                    <div class="accord-row-head" data-toggle="collapse" data-target="#collapseExampleArea3" href="#collapseExampleArea3" aria-expanded="false">
+                <div class="accord-row  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.20s">
+                    <div class="accord-row-head" data-toggle="collapse" data-target="#collapseExampleArea" href="#collapseExampleArea" aria-expanded="false">
                         <div class="accord-row1">
                             <div>
                                 <img src="images/conv.png" alt="icon">
-                                <span>HXYF</span>
+                                <span>HEX/HXB LP</span>
                             </div>
                             <div>
                                <div class="accord-subhead">
                                    APY
                                </div>
-                               106%
+                               1250%
                            </div>
                         </div>
                         <div class="accord-row2">
@@ -159,44 +153,88 @@
                                <div class="accord-subhead">
                                    AVAILABLE TO DEPOSIT
                                </div>
-                               15.546 UNI
+                               <span id="hxyfEthLpBalance">0</span><br/>UNI-V2-HEX/HXB-LP
                            </div>
                             <i class="fa fa-caret-down" aria-hidden="true"></i>
                         </div>
                     </div>
-                    <div id="collapseExampleArea3" class="collapserow collapse">
+                    <div id="collapseExampleArea" class="collapserow collapse">
                         <div class="collapserow1">
                             <div class="collapserowHeading">
-                                Your Wallet
+                                Active Deposit<br/>
+                                <div id="activeDepositHxb">0 HEX/HXB-LP</div>
                             </div>
-                            <input type="" name="" class="form-control" placeholder="0.015">
-                            <div class="coll-row-opt-outer">
-                                <div class="coll-row-opt-inner">0%</div>
-                                <div class="coll-row-opt-inner">25%</div>
-                                <div class="coll-row-opt-inner">75%</div>
-                                <div class="coll-row-opt-inner">100%</div>
+                            <input id="lockAmountHxb" type="number" class="form-control" step="any" placeholder="0" value="0"> UNI-V2-HEX/HXB-LP
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <a onclick="LockLp('hxb')" class="btn-main">DEPOSIT</a>
+                               </div>
+                               <div class="col-12 col-md-6">
+                                   <a onclick="UnlockLp('hxb')" class="btn-main">WITHDRAW</a>
+                              </div>
                             </div>
-                            <a href="" class="btn-main">DEPOSIT</a>
+
                         </div>
                         <div class="collapserow2">
                             <div class="collapserowHeading">
-                                Your Dividends
+                                Claimable Rewards<br/>
+                                <div style="margin:0" id="claimableHxyfHxb">0 HXYF</div>
                             </div>
-                            <input type="" name="" class="form-control" placeholder="0.015">
-                            <div class="coll-row-opt-outer">
-                                <div class="coll-row-opt-inner">0%</div>
-                                <div class="coll-row-opt-inner">25%</div>
-                                <div class="coll-row-opt-inner">75%</div>
-                                <div class="coll-row-opt-inner">100%</div>
-                            </div>
-                            <a href="" class="btn-main">DEPOSIT</a>
+                            <a onclick="Harvest('hxb')" class="btn-main">HARVEST</a>
                         </div>
                     </div>
                 </div>
-                    
 
+                <div class="accord-row  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.20s">
+                    <div class="accord-row-head" data-toggle="collapse" data-target="#collapseExampleArea" href="#collapseExampleArea" aria-expanded="false">
+                        <div class="accord-row1">
+                            <div>
+                                <img src="images/conv.png" alt="icon">
+                                <span>ETH/HXP LP</span>
+                            </div>
+                            <div>
+                               <div class="accord-subhead">
+                                   APY
+                               </div>
+                               1000%
+                           </div>
+                        </div>
+                        <div class="accord-row2">
+                           <div>
+                               <div class="accord-subhead">
+                                   AVAILABLE TO DEPOSIT
+                               </div>
+                               <span id="hxyfEthLpBalance">0</span><br/>UNI-V2-ETH/HXP-LP
+                           </div>
+                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div id="collapseExampleArea" class="collapserow collapse">
+                        <div class="collapserow1">
+                            <div class="collapserowHeading">
+                                Active Deposit<br/>
+                                <div id="activeDepositHxp">0 ETH/HXP-LP</div>
+                            </div>
+                            <input id="lockAmountHxp" type="number" class="form-control" step="any" placeholder="0" value="0"> UNI-V2-ETH/HXP-LP
+                            <div class="row">
+                                 <div class="col-12 col-md-6">
+                                      <a onclick="LockLp('hxp')" class="btn-main">DEPOSIT</a>
+                                 </div>
+                                 <div class="col-12 col-md-6">
+                                     <a onclick="UnlockLp('hxp')" class="btn-main">WITHDRAW</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapserow2">
+                            <div class="collapserowHeading">
+                                Claimable Rewards<br/>
+                                <div style="margin:0" id="claimableHxyfHxp">0 HXYF</div>
+                            </div>
+                            <a onclick="Harvest('hxp')" class="btn-main">HARVEST</a>
+                        </div>
+                    </div>
+                </div>
 
-                
             </div>
         </section>
     </div>
@@ -211,7 +249,9 @@
     <script type="text/javascript" src="js/jquery.min.js"></script> 
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/wow.min.js"></script>
-
+    <script type="text/javascript" src="js/web3.min.js"></script>
+    <script type="text/javascript" src="js/web3Connect.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript">
         //wow animation js 
         new WOW().init();   

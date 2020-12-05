@@ -1,4 +1,4 @@
-var refShare = 1000;//min 0.1%
+/*var refShare = 1000;//min 0.1%
 
 var refElem = document.getElementById("currentRef");
 if (window.location.href.includes("r=0x")) { //new ref
@@ -16,12 +16,12 @@ if (window.location.href.includes("r=0x")) { //new ref
     referralAddress = "0x0000000000000000000000000000000000000000";
     console.log("ref: " + referralAddress);
   }
-}
+}*/
 
-//setTimeout(function(){
-//  PopulateStakeTable();
-//}, 5000);
 
+setInterval(function(){
+  Populate();
+}, 60000);
 
 async function Approve() {
   var value = "999999999999999999999999999999999999999999999";
@@ -94,7 +94,7 @@ async function LockLp(token) {
         return;
       }
       var val = web3.utils.toWei(value);
-      var allow = await hxyfContract.methods.allowance(activeAccount, hxyfLpContract).call();
+      var allow = await hxyfContract.methods.allowance(activeAccount, uniETHHXYF).call();
       console.log(allow);
       if(balance > allow){
         errorMessage('You must approve Metamask');
@@ -118,13 +118,13 @@ async function LockLp(token) {
     }
     else if(token == "hxy"){
       var value = document.getElementById("lockAmountHxy").value;
-      var balance = await hxyContract.methods.balanceOf(activeAccount).call();
+      var balance = await hxyLpContract.methods.balanceOf(activeAccount).call();
       if (value == null || value <= 0 || value == "") {
         errorMessage("Value must be greater than 0");
         return;
       }
       var val = web3.utils.toWei(value);
-      var allow = await hxyfContract.methods.allowance(activeAccount, hxyLpContract).call();
+      var allow = await hxyfContract.methods.allowance(activeAccount, uniETHHXY).call();
       console.log(allow);
       if(balance > allow){
         errorMessage('You must approve Metamask');
@@ -154,7 +154,7 @@ async function LockLp(token) {
         return;
       }
       var val = web3.utils.toWei(value);
-      var allow = await hxyfContract.methods.allowance(activeAccount, hxbLpContract).call();
+      var allow = await hxyfContract.methods.allowance(activeAccount, uniHEXHXB).call();
       console.log(allow);
       if(balance > allow){
         errorMessage('You must approve Metamask');
@@ -184,7 +184,7 @@ async function LockLp(token) {
         return;
       }
       var val = web3.utils.toWei(value);
-      var allow = await hxyfContract.methods.allowance(activeAccount, hxpLpContract).call();
+      var allow = await hxyfContract.methods.allowance(activeAccount, uniETHHXP).call();
       console.log(allow);
       if(balance > allow){
         errorMessage('You must approve Metamask');
@@ -214,11 +214,11 @@ async function LockLp(token) {
 
 
 
-async function UnfreezeTokens(token) {
+async function UnlockLp(token) {
   var frozenLp;
   switch(token){
     case "hxyf": 
-    frozenLp = await hxyFreezeContract.methods.hxyfLpFrozenBalances(activeAccount).call();
+    frozenLp = await hxyfContract.methods.hxyfLpFrozenBalances(activeAccount).call();
     if(frozenLp == 0){
       errorMessage("Nothing to unfreeze");
       return;
@@ -236,7 +236,7 @@ async function UnfreezeTokens(token) {
     }); 
     break;
     case "hxy": 
-    frozenLp = await hxyFreezeContract.methods.hxyLpFrozenBalances(activeAccount).call();
+    frozenLp = await hxyfContract.methods.hxyLpFrozenBalances(activeAccount).call();
     if(frozenLp == 0){
       errorMessage("Nothing to unfreeze");
       return;
@@ -254,7 +254,7 @@ async function UnfreezeTokens(token) {
     }); 
     break;
     case "hxb": 
-    frozenLp = await hxyFreezeContract.methods.hxbLpFrozenBalances(activeAccount).call();
+    frozenLp = await hxyfContract.methods.hxbLpFrozenBalances(activeAccount).call();
     if(frozenLp == 0){
       errorMessage("Nothing to unfreeze");
       return;
@@ -272,7 +272,7 @@ async function UnfreezeTokens(token) {
     }); 
     break;
     case "hxp":
-    frozenLp = await hxyFreezeContract.methods.hxpLpFrozenBalances(activeAccount).call();
+    frozenLp = await hxyfContract.methods.hxpLpFrozenBalances(activeAccount).call();
     if(frozenLp == 0){
       errorMessage("Nothing to unfreeze");
       return;
@@ -300,7 +300,7 @@ async function Harvest(token) {
   var frozenLp;
   switch(token){
     case "hxyf": 
-    frozenLp = await hxyFreezeContract.methods.hxyfLpFrozenBalances(activeAccount).call();
+    frozenLp = await hxyfContract.methods.hxyfLpFrozenBalances(activeAccount).call();
     if(frozenLp == 0){
       errorMessage("Nothing to harvest");
       return;
@@ -318,7 +318,7 @@ async function Harvest(token) {
     }); 
     break;
     case "hxy": 
-    frozenLp = await hxyFreezeContract.methods.hxyLpFrozenBalances(activeAccount).call();
+    frozenLp = await hxyfContract.methods.hxyLpFrozenBalances(activeAccount).call();
     if(frozenLp == 0){
       errorMessage("Nothing to harvest");
       return;
@@ -336,7 +336,7 @@ async function Harvest(token) {
     }); 
     break;
     case "hxb": 
-    frozenLp = await hxyFreezeContract.methods.hxbLpFrozenBalances(activeAccount).call();
+    frozenLp = await hxyfContract.methods.hxbLpFrozenBalances(activeAccount).call();
     if(frozenLp == 0){
       errorMessage("Nothing to harvest");
       return;
@@ -354,7 +354,7 @@ async function Harvest(token) {
     }); 
     break;
     case "hxp":
-    frozenLp = await hxyFreezeContract.methods.hxpLpFrozenBalances(activeAccount).call();
+    frozenLp = await hxyfContract.methods.hxpLpFrozenBalances(activeAccount).call();
     if(frozenLp == 0){
       errorMessage("Nothing to harvest");
       return;
@@ -374,6 +374,18 @@ async function Harvest(token) {
     default:
       return
   }
+}
+
+async function Populate()
+{
+  document.getElementById("activeDepositHxyf").innerHTML = web3.utils.fromWei(await hxyfContract.methods.hxyfLpFrozenBalances(activeAccount).call()) + " ETH/HXYF-LP";
+  document.getElementById("activeDepositHxy").innerHTML = web3.utils.fromWei(await hxyfContract.methods.hxyLpFrozenBalances(activeAccount).call()) + " ETH/HXY-LP";
+  document.getElementById("activeDepositHxb").innerHTML = web3.utils.fromWei(await hxyfContract.methods.hxbLpFrozenBalances(activeAccount).call()) + " HEX/HXB-LP";
+  document.getElementById("activeDepositHxp").innerHTML = web3.utils.fromWei(await hxyfContract.methods.hxpLpFrozenBalances(activeAccount).call()) + " ETH/HXP-LP";
+  document.getElementById("claimableHxyfHxyf").innerHTML = web3.utils.fromWei(await hxyfContract.methods.calcHarvestRewards(activeAccount, uniETHHXYF).call()) + " HXYF";
+  document.getElementById("claimableHxyfHxy").innerHTML = web3.utils.fromWei(await hxyfContract.methods.calcHarvestRewards(activeAccount, uniETHHXY).call()) + " HXYF";
+  document.getElementById("claimableHxyfHxb").innerHTML = web3.utils.fromWei(await hxyfContract.methods.calcHarvestRewards(activeAccount, uniHEXHXB).call()) + " HXYF";
+  document.getElementById("claimableHxyfHxp").innerHTML = web3.utils.fromWei(await hxyfContract.methods.calcHarvestRewards(activeAccount, uniETHHXP).call()) + " HXYF";
 }
 
 async function ShowBalance(){
