@@ -94,7 +94,7 @@ async function LockLp(token) {
         return;
       }
       var val = web3.utils.toWei(value);
-      var allow = await hxyfContract.methods.allowance(activeAccount, uniETHHXYF).call();
+      var allow = await hxyfLpContract.methods.allowance(activeAccount, hxyfContractAddress).call();
       console.log(allow);
       if(balance > allow){
         errorMessage('You must approve Metamask');
@@ -124,7 +124,7 @@ async function LockLp(token) {
         return;
       }
       var val = web3.utils.toWei(value);
-      var allow = await hxyfContract.methods.allowance(activeAccount, uniETHHXY).call();
+      var allow = await hxyLpContract.methods.allowance(activeAccount, hxyfContractAddress).call();
       console.log(allow);
       if(balance > allow){
         errorMessage('You must approve Metamask');
@@ -154,7 +154,7 @@ async function LockLp(token) {
         return;
       }
       var val = web3.utils.toWei(value);
-      var allow = await hxyfContract.methods.allowance(activeAccount, uniHEXHXB).call();
+      var allow = await hxbLpContract.methods.allowance(activeAccount, hxyfContractAddress).call();
       console.log(allow);
       if(balance > allow){
         errorMessage('You must approve Metamask');
@@ -184,7 +184,7 @@ async function LockLp(token) {
         return;
       }
       var val = web3.utils.toWei(value);
-      var allow = await hxyfContract.methods.allowance(activeAccount, uniETHHXP).call();
+      var allow = await hxpLpContract.methods.allowance(activeAccount, hxyfContractAddress).call();
       console.log(allow);
       if(balance > allow){
         errorMessage('You must approve Metamask');
@@ -386,6 +386,10 @@ async function Populate()
   document.getElementById("claimableHxyfHxy").innerHTML = web3.utils.fromWei(await hxyfContract.methods.calcHarvestRewards(activeAccount, uniETHHXY).call()) + " HXYF";
   document.getElementById("claimableHxyfHxb").innerHTML = web3.utils.fromWei(await hxyfContract.methods.calcHarvestRewards(activeAccount, uniHEXHXB).call()) + " HXYF";
   document.getElementById("claimableHxyfHxp").innerHTML = web3.utils.fromWei(await hxyfContract.methods.calcHarvestRewards(activeAccount, uniETHHXP).call()) + " HXYF";
+  document.getElementById("hxyfEthLpBalance").innerHTML = web3.utils.fromWei(await hxyfLpContract.methods.balanceOf(activeAccount).call());
+  document.getElementById("hxyEthLpBalance").innerHTML = web3.utils.fromWei(await hxyLpContract.methods.balanceOf(activeAccount).call());
+  document.getElementById("hxbEthLpBalance").innerHTML = web3.utils.fromWei(await hxbLpContract.methods.balanceOf(activeAccount).call());
+  document.getElementById("hxpEthLpBalance").innerHTML = web3.utils.fromWei(await hxpLpContract.methods.balanceOf(activeAccount).call());
 }
 
 async function ShowBalance(){
