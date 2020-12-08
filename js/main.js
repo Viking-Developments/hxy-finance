@@ -93,14 +93,14 @@ async function LockLp(token) {
         errorMessage("Value must be greater than 0");
         return;
       }
-      var val = web3.utils.toWei(value);
+      var val = web3.utils.toWei(value.toString());
       var allow = await hxyfLpContract.methods.allowance(activeAccount, hxyfContractAddress).call();
       console.log(allow);
       if(balance > allow){
         errorMessage('You must approve Metamask');
         return;
       }
-      if (balance < val) {
+      if ((balance - val) < 0) {
         errorMessage("Insufficient available UNI-V2-ETH/HXYF-LP balance");
         return;
       }
@@ -123,15 +123,15 @@ async function LockLp(token) {
         errorMessage("Value must be greater than 0");
         return;
       }
-      var val = web3.utils.toWei(value);
+      var val = web3.utils.toWei(value.toString());
       var allow = await hxyLpContract.methods.allowance(activeAccount, hxyfContractAddress).call();
       console.log(allow);
       if(balance > allow){
         errorMessage('You must approve Metamask');
         return;
       }
-      if (balance < val) {
-        errorMessage("Insufficient available UNI-V2-ETH/HXY-LP balance");
+      if ((balance - val) < 0) {
+        errorMessage("Insufficient available UNI-V2-ETH/HXYF-LP balance");
         return;
       }
       hxyfContract.methods.FreezeEthHxyLP(web3.utils.toHex(val)).send({
@@ -153,15 +153,16 @@ async function LockLp(token) {
         errorMessage("Value must be greater than 0");
         return;
       }
-      var val = web3.utils.toWei(value);
+
+      var val = web3.utils.toWei(value.toString());
       var allow = await hxbLpContract.methods.allowance(activeAccount, hxyfContractAddress).call();
       console.log(allow);
       if(balance > allow){
         errorMessage('You must approve Metamask');
         return;
       }
-      if (balance < val) {
-        errorMessage("Insufficient available UNI-V2-HEX/HXB-LP balance");
+      if ((balance - val) < 0) {
+        errorMessage("Insufficient available UNI-V2-ETH/HXYF-LP balance");
         return;
       }
       hxyfContract.methods.FreezeHexHxbLP(web3.utils.toHex(val)).send({
@@ -183,18 +184,18 @@ async function LockLp(token) {
         errorMessage("Value must be greater than 0");
         return;
       }
-      var val = web3.utils.toWei(value);
+      var val = web3.utils.toWei(value.toString());
       var allow = await hxpLpContract.methods.allowance(activeAccount, hxyfContractAddress).call();
       console.log(allow);
       if(balance > allow){
         errorMessage('You must approve Metamask');
         return;
       }
-      if (balance < val) {
-        errorMessage("Insufficient available UNI-V2-ETH/HXP-LP balance");
+      if ((balance - val) < 0) {
+        errorMessage("Insufficient available UNI-V2-ETH/HXYF-LP balance");
         return;
       }
-      hxyfContract.methods.FreezeHexHxbLP(web3.utils.toHex(val)).send({
+      hxyfContract.methods.FreezeEthHxpLP(web3.utils.toHex(val)).send({
         from: activeAccount
       })
       .on('receipt', function (receipt) {
@@ -388,8 +389,15 @@ async function Populate()
   document.getElementById("claimableHxyfHxp").innerHTML = web3.utils.fromWei(await hxyfContract.methods.calcHarvestRewards(activeAccount, uniETHHXP).call()) + " HXYF";
   document.getElementById("hxyfEthLpBalance").innerHTML = web3.utils.fromWei(await hxyfLpContract.methods.balanceOf(activeAccount).call());
   document.getElementById("hxyEthLpBalance").innerHTML = web3.utils.fromWei(await hxyLpContract.methods.balanceOf(activeAccount).call());
-  document.getElementById("hxbEthLpBalance").innerHTML = web3.utils.fromWei(await hxbLpContract.methods.balanceOf(activeAccount).call());
+  document.getElementById("hexHxbLpBalance").innerHTML = web3.utils.fromWei(await hxbLpContract.methods.balanceOf(activeAccount).call());
   document.getElementById("hxpEthLpBalance").innerHTML = web3.utils.fromWei(await hxpLpContract.methods.balanceOf(activeAccount).call());
+  var halvening = await hxyfContract.methods.halvening().call();
+  document.getElementById("hxyfApy").innerHTML = (16850 / halvening) + "%";
+  document.getElementById("hxyApy").innerHTML = (1412 / halvening) + "%";
+  document.getElementById("hxbApy").innerHTML = (1250 / halvening) + "%";
+  document.getElementById("hxpApy").innerHTML = (1000 / halvening) + "%";
+  
+
 }
 
 async function ShowBalance(){
