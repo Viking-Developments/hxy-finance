@@ -23,7 +23,7 @@ setInterval(function(){
   Populate();
 }, 60000);
 
-async function Approve() {
+async function ApproveAll() {
   var value = "999999999999999999999999999999999999999999999";
     hxyfLpContract.methods.approve(hxyfContractAddress, web3.utils.toHex(value)).send({
       from: activeAccount
@@ -77,6 +77,76 @@ async function Approve() {
       console.error;
       errorMessage("Approve failed, please try again...");
     });
+}
+
+async function ApproveHxyf() {
+  var value = "999999999999999999999999999999999999999999999";
+    hxyfLpContract.methods.approve(hxyfContractAddress, web3.utils.toHex(value)).send({
+      from: activeAccount
+    })
+    .on('receipt', function (receipt) {
+      // receipt example
+      console.log("Approve confirmed for UNI-V2-ETH/HXYF-LP");
+      successMessage("Successfully approved UNI-V2-ETH/HXYF-LP");
+      console.log(receipt);
+    })
+    .on('error', function () {
+      console.error;
+      errorMessage("Approve failed, please try again...");
+    });
+}
+
+async function ApproveHxy() {
+  var value = "999999999999999999999999999999999999999999999";
+  hxyLpContract.methods.approve(hxyfContractAddress, web3.utils.toHex(value)).send({
+    from: activeAccount
+  })
+  .on('receipt', function (receipt) {
+    // receipt example
+    console.log("Approve confirmed for UNI-V2-ETH/HXY-LP");
+    successMessage("Successfully approved UNI-V2-ETH/HXY-LP");
+    console.log(receipt);
+  })
+  .on('error', function () {
+    console.error;
+    errorMessage("Approve failed, please try again...");
+  });
+}
+
+async function ApproveHxb() {
+  var value = "999999999999999999999999999999999999999999999";
+  
+  hxbLpContract.methods.approve(hxyfContractAddress, web3.utils.toHex(value)).send({
+    from: activeAccount
+  })
+  .on('receipt', function (receipt) {
+    // receipt example
+    console.log("Approve confirmed for UNI-V2-HEX/HXB-LP");
+    successMessage("Successfully approved UNI-V2-HEX/HXB-LP");
+    console.log(receipt);
+  })
+  .on('error', function () {
+    console.error;
+    errorMessage("Approve failed, please try again...");
+  });
+}
+
+async function ApproveHxp() {
+  var value = "999999999999999999999999999999999999999999999";
+  
+  hxpLpContract.methods.approve(hxyfContractAddress, web3.utils.toHex(value)).send({
+    from: activeAccount
+  })
+  .on('receipt', function (receipt) {
+    // receipt example
+    console.log("Approve confirmed for UNI-V2-ETH/HXP-LP");
+    successMessage("Successfully approved UNI-V2-ETH/HXP-LP");
+    console.log(receipt);
+  })
+  .on('error', function () {
+    console.error;
+    errorMessage("Approve failed, please try again...");
+  });
 }
 
 
